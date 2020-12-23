@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="module">
+
+        import {render, useState } from "../lib/suiweb.js";
+
+        let initialState = {
+            newsCount: 0,
+            articles: [],
+            fixValue: 42
+        }
+
+        const Articles = ( { articles }) => {
+
+            // let newsList = ["ul"];
+            // articles.forEach( (element) => {
+            //     newsList.push(["li", element.title]);
+            // })
+
+            let newsList = ["div"];
+            articles.forEach( (element) => {
+                newsList.push(["img", { src: element.urlToImage, style: "width: 100px"}]);
+            })
+            return newsList;
+        }
+
+        const App = () => {
+
+            let [state, setState] = useState("state", 1, initialState);
+
+            if(state.newsCount === 0) {
+                fetch("http://newsapi.org/v2/top-headlines?country=ch&category=business&apiKey=bc85414f1a894b40a4ac56a60eb6f726")
+                    .then( ( result ) => result.json())
+                    .then( 
+                        ( data ) => {
+                            console.log(data);
+                            //state.newsCount = data.totalResults;
+                            setState( (state) => {
+                                state.newsCount = data.totalResults;
+                                state.articles = data.articles;
+                                return state;
+                            });
+                        }
+                    )
+            }
+
+            return ( 
+                ["div", 
+                    ["p", "Result count: " + state.newsCount],
+                    ["p", "Fix: " + state.fixValue],
+                    [Articles, { articles: state.articles }]
+                ]
+            )
+        }
+
+        let container = document.getElementById("root");
+
+        const element = [App];
+        render(element , container);
+
+    </script>
+</body>
+</html>

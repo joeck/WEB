@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+  <link rel="stylesheet" href="styles.css">
+  <title>Connect4</title>
+</head>
+
+<body>
+  <noscript>
+    You need to enable JavaScript to run this app.
+  </noscript>
+  <div id="root"></div>
+
+  <script type="module">
+
+
+import { render, useState, useEffect } from "../lib/suiweb.js"
+
+let initialState = {
+  board: [
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', 'r', 'b', '', '', '' ]
+  ],
+  next: 'b',
+  me: 'r',
+}
+
+let config = { 
+  pollInterval: 1000,
+}
+
+
+const Board = ({board}) => {
+  let fields = [].concat(...board).map((type, index) => 
+    [Field, {type, index}]
+  )
+  return (
+    ["div", {className: "board"}, ...fields]
+  )
+}
+
+const Field = ({type, index}) => {
+  /* to do */
+  let color = {r: "red", b: "blue"}[type]
+  let piece = color ? ["div", {className: "piece "+color}] : ""
+  return (
+    ["div", {className: "field"}, piece]
+  )
+}
+
+const App = () => {
+  let [state, setState] = useState("state", 1, initialState)
+  
+  return (
+    [Board, {board: state.board}] 
+  )
+}
+
+const element =
+  [App]
+
+const container = document.getElementById("root")
+render(element, container)
+
+
+  </script>
+</body>
+</html>

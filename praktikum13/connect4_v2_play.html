@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+  <link rel="stylesheet" href="styles.css">
+  <title>Connect4</title>
+</head>
+
+<body>
+  <noscript>
+    You need to enable JavaScript to run this app.
+  </noscript>
+  <div id="root"></div>
+
+  <script type="module">
+
+
+import { render, useState, useEffect } from "../lib/suiweb.js"
+
+let stateSeq =[]
+
+let initialState = {
+  board: [
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ]
+  ],
+  next: 'b',
+  me: 'r',
+}
+
+let config = { 
+  pollInterval: 1000,
+}
+
+let setIn2DArray = (arr, row, col, value) => {
+  let updRow = [].concat(arr[row].slice(0,col), [value], arr[row].slice(col+1))
+  return [].concat(arr.slice(0,row), [updRow], arr.slice(row+1))
+}
+
+
+const Board = ({board, onDrop}) => {
+  let fields = [].concat(...board).map((type, index) => [Field, {type, index, onDrop}])
+  return (
+    ["div", {className: "board"}, ...fields]
+  )
+}
+
+const Field = ({type, index, onDrop}) => {
+  let color = {r: "red", b: "blue"}[type]
+  let piece = color ? ["div", {className: "piece "+color}] : ""
+  return (
+    ["div", {className: "field", onclick: onDrop.bind(null, index)}, piece]
+  )
+}
+
+const App = () => {
+  let [state, setState] = useState("state", 1, initialState)
+  
+  const onDrop = (idx) => {
+    // find next free field in column
+    let nextfree = state.board.map(row => row[idx%7]).findIndex(f => f != "")
+    nextfree = (nextfree == -1) ? 5 : nextfree - 1
+    
+    // place piece and report to server
+    if (nextfree >= 0) {
+      let board = setIn2DArray(state.board, nextfree, idx%7, state.next)
+      let next = (state.next == 'r') ? 'b' : 'r'
+      stateSeq.push(state)
+      setState((state) => ({...state, board, next}))
+    }    
+  }
+
+  const onUndo = () => {
+    if (stateSeq.length > 0){
+      setState(() => stateSeq.pop())
+    }
+  }
+   
+  return (
+    ["section",
+      [Board, {board: state.board, onDrop}],
+      ["button", {onclick: onUndo}, "Undo"]
+    ]
+  )
+}
+
+const element =
+  [App]
+
+const container = document.getElementById("root")
+render(element, container)
+
+
+  </script>
+</body>
+</html>

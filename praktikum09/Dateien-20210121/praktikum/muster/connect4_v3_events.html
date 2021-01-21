@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+
+/*
+ *  This solution sould be considered as a proof of concept – the code 
+ *  definitely needs some cleanup and documentation
+ */
+
+let state = {
+  board: [
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ]
+  ],
+  next: 'r'
+}
+
+
+//  Initialize game
+//
+function initGame () {
+  let board = showBoard()
+  attachEventHandler(board)
+}
+
+
+//  Show board
+// 
+function showBoard () {
+  let board = document.querySelector(".board")
+  while (board.firstChild) { board.removeChild(board.firstChild) }
+  for (let i=0; i<42; i++) { 
+    board.appendChild(elt("div", {"class": "field"}, ...getPiece(i)))
+  }
+  return board
+}
+
+function getPiece (n) {
+  let code = state.board[Math.floor(n/7)][n%7]
+  switch (code) {
+    case 'r': return [elt("div", {"class": "piece red"})]
+    case 'b': return [elt("div", {"class": "piece blue"})]
+    default: return []
+  }
+}
+
+function elt (type, attrs, ...children) {
+  let node = document.createElement(type)
+  for (a in attrs) {
+    node.setAttribute(a, attrs[a])
+  }
+  for (let child of children) {
+    if (typeof child != "string") node.appendChild(child)
+    else node.appendChild(document.createTextNode(child))
+  }
+  return node
+}
+
+
+//  Attach event handler to board
+//
+function attachEventHandler (board) {
+  board.addEventListener("click", (e) => {
+    let field = e.target
+    
+    // do nothing if there is a piece already
+    if (field.classList.contains("piece")) return
+    
+    // find out which field got the click event
+    let allFields = Array.from(board.children)
+    let n = allFields.findIndex(node => node === field)
+    
+    // place piece
+    state.board[Math.floor(n/7)][n%7] = state.next
+    state.next = (state.next == 'r') ? 'b' : 'r'
+    showBoard()
+  })
+}
+    
+  </script>
+
+</head>
+<body>
+
+  <div class="board"></div>
+
+  <script>
+    initGame()
+  </script>
+
+</body>
+</html>

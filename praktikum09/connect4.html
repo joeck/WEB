@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+
+  <style>
+    div {
+      box-sizing: border-box;
+    }
+
+    .board {
+      width: 84vw;
+      margin: auto;
+      outline: 1px solid black;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .board .field {
+      border: 1px solid black;
+      width: 12vw;
+      height: 12vw;
+    }
+
+    .board .field .piece {
+      width: 10vw;
+      height: 10vw;
+      border-radius: 50%;
+      margin: 1vw;
+    }
+
+    .board .field .blue {
+      background-color: blue;
+    }
+
+    .board .field .red {
+      background-color: red;
+    }
+  </style>
+
+
+</head>
+
+<body>
+
+  <div class="board">
+  </div>
+
+  <script>
+
+    let board = [ 
+      "", "", "", "", "", "", "",
+      "", "", "r", "", "r", "", "",
+      "", "r", "", "r", "", "r", "",
+      "", "r", "", "", "", "r", "",
+      "", "", "r", "", "r", "", "",
+      "", "", "", "r", "", "", ""
+    ]
+
+    const color = {r:"red", b:"blue"}
+    let next = "r"
+
+    function showBoard(){
+      let boardDOM = document.querySelector(".board")
+      while (boardDOM.firstChild && !boardDOM.firstChild.remove());
+      for (field in board){
+        let pieceColor = color[board[field]]
+        let child = pieceColor ? elt("div", {"class": "piece " + pieceColor}) : ""
+        boardDOM.appendChild(elt("div", {"class": "field", "onClick": "onClick("+field+")"}, child))
+      }
+    }
+
+    function onClick(id){
+      board[id] = next
+      next = next === "r" ? "b" : "r"
+      showBoard()
+    }
+
+    function elt(type, attrs, ...children) {
+      let node = document.createElement(type)
+      for (a in attrs) { 
+        node.setAttribute(a, attrs[a]) 
+      } 
+      for (let child of children) { 
+        if (typeof child != "string") node.appendChild(child)
+        else node.appendChild(document.createTextNode(child))
+      } 
+      return node 
+    }
+    let boardDOM = document.querySelector(".board")
+    for (let index = 0; index < 42; index++) {
+      let child = ""
+      if (Math.random() > 0.7){
+        let color = Math.random() > 0.5 ? "red" : "blue"
+        child = elt("div", {"class": "piece " + color})
+      }
+      //board.appendChild(elt("div", {"class": "field"}, child))
+    }
+    showBoard()
+  </script>
+
+</body>
+
+</html>

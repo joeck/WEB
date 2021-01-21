@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+
+/*
+ *  This solution sould be considered as a proof of concept – the code 
+ *  definitely needs some cleanup and documentation
+ */
+
+function showBoard () {
+  let board = document.querySelector(".board")
+  for (let i=0; i<42; i++) {
+    board.appendChild(elt("div", {"class": "field"}, ...randomPiece()))
+  }
+}
+
+function randomPiece () {
+  let piece = []
+  if (Math.random()<0.1) {
+    let pClass = "piece " + (Math.random()<0.5 ? "blue" : "red")
+    piece[0] = elt("div", {"class": pClass})
+  }
+  return piece
+}
+
+function elt (type, attrs, ...children) {
+  let node = document.createElement(type)
+  for (a in attrs) {
+    node.setAttribute(a, attrs[a])
+  }
+  for (let child of children) {
+    if (typeof child != "string") node.appendChild(child)
+    else node.appendChild(document.createTextNode(child))
+  }
+  return node
+}
+  
+  </script>
+
+</head>
+<body>
+
+  <div class="board"></div>
+
+  <script>
+    showBoard()
+  </script>
+
+</body>
+</html>

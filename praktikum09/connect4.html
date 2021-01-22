@@ -38,6 +38,21 @@
     .board .field .red {
       background-color: red;
     }
+
+    #playerIndicator {
+      width: 5vw;
+      height: 5vw;
+      border-radius: 50%;
+      margin: 0.5vw;
+    }
+
+    #playerIndicator.red {
+      background-color: red;
+    }
+
+    #playerIndicator.blue {
+      background-color: blue;
+    }
   </style>
 
 
@@ -45,22 +60,34 @@
 
 <body>
 
+  <button type="button" onclick="newGame()">New Game</button>
+
   <div class="board">
   </div>
+
+  <p>Spieler ist am Zug:</p>
+  <div id="playerIndicator" class="red"></div>
 
   <script>
 
     let board = [ 
       "", "", "", "", "", "", "",
-      "", "", "r", "", "r", "", "",
-      "", "r", "", "r", "", "r", "",
-      "", "r", "", "", "", "r", "",
-      "", "", "r", "", "r", "", "",
-      "", "", "", "r", "", "", ""
+      "", "", "", "", "", "", "",
+      "", "", "", "", "", "", "",
+      "", "", "", "", "", "", "",
+      "", "", "", "", "", "", "",
+      "", "", "", "", "", "", ""
     ]
 
     const color = {r:"red", b:"blue"}
     let next = "r"
+
+    function newGame(){
+      board = board.map(elem => elem = "")
+      showBoard()
+      next = "b"
+      changePlayer()
+    }
 
     function showBoard(){
       let boardDOM = document.querySelector(".board")
@@ -72,10 +99,32 @@
       }
     }
 
+    function changePlayer(){
+      let playerIndicator = document.querySelector("#playerIndicator")
+      if (next === "r"){
+        next = "b"
+        playerIndicator.classList.remove("red")
+        playerIndicator.classList.add("blue")
+      } else {
+        next = "r"
+        playerIndicator.classList.remove("blue")
+        playerIndicator.classList.add("red")
+      }
+    }
+
     function onClick(id){
-      board[id] = next
-      next = next === "r" ? "b" : "r"
-      showBoard()
+      let field = -1
+      for (let index = 35; index >= 0; index-=7) {
+        if (board[index + id%7] == ""){
+          field = index + id%7;
+          break
+        }
+      }
+      if (field >= 0){
+        board[field] = next
+        changePlayer()
+        showBoard()
+      }
     }
 
     function elt(type, attrs, ...children) {
@@ -89,16 +138,7 @@
       } 
       return node 
     }
-    let boardDOM = document.querySelector(".board")
-    for (let index = 0; index < 42; index++) {
-      let child = ""
-      if (Math.random() > 0.7){
-        let color = Math.random() > 0.5 ? "red" : "blue"
-        child = elt("div", {"class": "piece " + color})
-      }
-      //board.appendChild(elt("div", {"class": "field"}, child))
-    }
-    showBoard()
+    newGame()
   </script>
 
 </body>

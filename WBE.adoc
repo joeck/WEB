@@ -1,0 +1,8 @@
+= WBE Zusamenfassung
+
+
+== Same Origin Policy
+
+Aus Sicherheitsgründen darf ein Script normalerweise nur mit Ressourcen auf derselben Quelle in-teragieren, von der es selbst heruntergeladen wurde. Sonst könnte ein Script einer Website, nennen wir sie http://malicous.attacks/you-have-won.html, schlimmstenfalls mit anderen Seiten interagie-ren, in die wir gerade eingeloggt sind (Facebook, Bank). Der Server der anderen Seite kann einen solchen Zugriff jedoch zulassen, indem er mit einem Access-Control-Allow-Origin-Header alle oder bestimmte Quellen zulässt. Dies wird als *Cross-Origin Resource Sharing (CORS)* bezeichnet.
+
+Mehr Informationen: link:https://developer.mozilla.org/de/docs/Web/HTTP/CORS[CORS]

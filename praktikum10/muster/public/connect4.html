@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+
+/*
+ *  This solution sould be considered as a proof of concept – the code 
+ *  definitely needs some cleanup and documentation
+ */
+ 
+let state = {
+  board: [
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ],
+    [ '', '', '', '', '', '', '' ]
+  ],
+  next: 'b'
+}
+
+let session = { 
+  me: 'r',
+  pollInterval: 1000,
+}
+
+
+//  Initialize game
+//
+function initGame () {
+  // url handling
+  let url = new URL(document.location)
+  session.url = url.origin + '/'
+  session.id = url.searchParams.get("id")
+  
+  // remote user?
+  if (session.id) { session.me = 'b' }
+  else postState()
+  
+  // show board and start listening for events
+  let board = showBoard()
+  attachEventHandler(board) 
+  setInterval(getState, session.pollInterval)
+}
+
+
+//  Show board
+// 
+function showBoard () {
+  let board = document.querySelector(".board")
+  // first remove all fields
+  while (board.firstChild) { board.removeChild(board.firstChild) }
+  // re-create board
+  for (let i=0; i<42; i++) { 
+    board.appendChild(elt("div", {"class": "field"}, ...getPiece(i)))
+  }
+  // set board active/inactive
+  if (session.me == state.next) { board.classList.remove("inactive") }
+  else { board.classList.add("inactive") }
+  return board
+}
+
+function getPiece (n) {
+  let code = state.board[Math.floor(n/7)][n%7]
+  switch (code) {
+    case 'r': return [elt("div", {"class": "piece red"})]
+    case 'b': return [elt("div", {"class": "piece blue"})]
+    default: return []
+  }
+}
+
+function elt (type, attrs, ...children) {
+  let node = document.createElement(type)
+  for (a in attrs) {
+    node.setAttribute(a, attrs[a])
+  }
+  for (let child of children) {
+    if (typeof child != "string") node.appendChild(child)
+    else node.appendChild(document.createTextNode(child))
+  }
+  return node
+}
+
+
+//  Attach event handler to board
+//
+function attachEventHandler (board) {
+  board.addEventListener("click", (e) => {
+    // do nothing if it's not our turn
+    if (session.me != state.next) return
+    
+    // find out which field got the click event
+    let field = e.target
+    if (field.classList.contains("piece")) field = field.parentNode
+    let allFields = Array.from(board.children)
+    let n = allFields.findIndex(node => node === field)
+    
+    // find next free field in column
+    let nextfree = state.board.map(row => row[n%7]).findIndex(f => f != "")
+    nextfree = (nextfree == -1) ? 5 : nextfree - 1
+    
+    // place piece and report to server
+    if (nextfree >= 0) {
+      state.board[nextfree][n%7] = state.next
+      state.next = (state.next == 'r') ? 'b' : 'r'
+      putState()
+    } 
+    showBoard()
+  })
+}
+
+
+//  Post state to server and get new id
+//
+function postState () {
+  fetch(session.url + "api/data/?api-key=c4game", { 
+    method: 'POST', 
+    headers: { 'Content-type': 'application/json' }, 
+    body: JSON.stringify(state) 
+  })
+  .then(response => response.json())
+  .then(data => {
+    session.id = data.id
+    let body = document.body
+    let text = "Invitation Link: " + session.url + "connect4.html?id=" + session.id
+    body.appendChild(elt("div", {"class": "message"}, text))
+  })
+}
+
+//  Get current state from server and re-draw board
+//
+function getState () {
+  fetch(session.url + "api/data/" + session.id + "?api-key=c4game", { 
+    method: 'GET', 
+  })
+  .then(response => response.json())
+  .then(data => {
+    state = data
+    showBoard()
+  })
+}
+
+//  Put changed state to server
+//
+function putState () {
+  fetch(session.url + "api/data/" + session.id + "?api-key=c4game", { 
+    method: 'PUT', 
+    headers: { 'Content-type': 'application/json' }, 
+    body: JSON.stringify(state) 
+  })
+}
+
+  </script>
+
+</head>
+<body>
+
+  <div class="board"></div>
+
+  <script>
+    initGame()
+  </script>
+
+</body>
+</html>

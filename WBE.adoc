@@ -1,5 +1,19 @@
 = WBE Zusamenfassung
+:imagesdir: img
 
+== Datentypen
+
+* Objekte und Arrays sind Referenz-Datentypen (jederzeit veränderbar)
+* Zahlen, Strings und Wahrheitswerte sind Wertetypen (unveränderlich)
+
+image:Types.png[Types]
+
+=== Arrays
+image:Arrays.png[Arrays]
+
+== Ablauf
+
+image:Ablauf.png[Ablauf]
 
 == Same Origin Policy
 

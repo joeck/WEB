@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Spezial-Reisen</title>
+
+  <meta name="description" content="WEB1-Demoseite" />
+  <meta name="keywords" content="ZHAW, WEB1" />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
+  <link rel="stylesheet" href="style.css" />
+  
+</head>
+
+<body>
+
+  <div>
+
+    <!--
+    Hinweis zum Header: "Reise-Saison 2019" ist eigentlich ein Subtitel. Dieser darf
+    nicht als "h2" ausgezeichnet werden, W3C-HTML5-Spec:
+
+    h1–h6 elements must not be used to markup subheadings, subtitles, alternative
+    titles and taglines unless intended to be the heading for a new section or
+    subsection.
+    -->
+    <header>
+      <h1>Spezial-Reisen</h1>
+      <p class="subheader">Reise-Saison 2019</p>
+
+      <!--
+      Beim Bild ist die Frage, ob es zum Inhalt gehört oder eher als eine Art
+      Verzierung angesehen wird. Im ersten Fall erscheint es hier in einem img-
+      Element, im zweiten Fall wird es später mit CSS hinzugefügt.
+      -->
+      <img src="img/houtbay.jpg" alt="Reise nach Ägypten" height="240" width="920">
+
+      <nav>
+        <ol>
+          <li><a href="reiseziele.html">Reiseziele</a></li>
+          <li><a href="kontakt.html">Kontakt</a>
+            <ol>
+              <li><a href="kontakt_mail.html">E-Mail</a></li>
+              <li><a href="kontakt_formular.html">Formular</a></li>
+            </ol>
+          </li>
+        </ol>
+      </nav>
+
+    </header>
+
+
+    <main>
+      <!--
+      Das folgende article-Element enthält nicht drei gleichwertige Überschriften
+      sondern eine Hauptüberschrift und zwei untergeordnete Überschriften, die
+      implizite Sections bilden. Das könnte so gemeint sein, ist aber aus dem
+      Design selbst nicht ersichtlich. Aus HTML-Sicht ist es jedenfalls korrekt.
+      -->
+      <article>
+        <h2>Seit zehn Jahren exklusive Reiseangebote</h2>
+
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
+          ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
+          parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec,
+          pellentesque eu, pretium
+          quis, sem.
+        </p>
+
+        <h2>Beratung durch Reisefachleute</h2>
+
+        <p>Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet
+          nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis
+          vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.
+          Cras dapibus. Vivamus  elementum semper nisi. Aenean vulputate eleifend tellus.
+          Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+        </p>
+
+        <h2>Gut versichert verreisen</h2>
+
+        <p>Letiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam
+          eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus,
+          sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam
+          nunc, blandit vel, luctus  pulvinar, hendrerit id, lorem. Maecenas nec odio
+          et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus.
+          Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt.
+        </p>
+
+        <footer>
+          <p>Lassen Sie uns Ihre Reise planen.</p>
+
+          <address class="kontakt impressum">
+            <p class="firmenname">Spezial-Reisen</p>
+
+            <p>Peter Muster<br>
+            Dorfweg 36<br>
+            1234 Altenstadt</p>
+
+            <p>Tel. 099 - 11 22 33<br>
+            Fax 099 - 11 22 44</p>
+          </address>
+        </footer>
+      </article>
+    </main>
+
+    <aside id="angebote">
+
+      <h2>Aktuelle Angebote</h2>
+
+      <!--
+      Leider ist in HTML bisher kein daterange-Attribut vorgesehen. Daher
+      ist hier ein etwas umständliches Markup nötig…
+
+      Hier wäre natürlich zu diskutieren, ob es sich wirklich um Absätze
+      oder eher Sections handelt und ob das span hier angebracht ist.
+
+      Selbstverständlich auch möglich: Liste von Einträgen.
+      -->
+
+      <p><span class="termin">April 2017:
+      <time datetime="2017-04-18">18.04</time> bis
+      <time datetime="2017-04-25">25.04</time>
+      </span>Kairo und Pyramiden</p>
+
+      <p><span class="termin">April 2017:
+      <time datetime="2017-04-18">18.04</time> bis
+      <time datetime="2017-04-25">25.04</time>
+      </span>Kreuzfahrt auf dem Nil</p>
+
+      <p><span class="termin">Mai 2017:
+      <time datetime="2017-05-12">12.05</time> bis
+      <time datetime="2017-05-19">19.05</time>
+      </span>Tauchen am Roten Meer</p>
+
+
+      <footer>
+        <p class="kontakt">Spezial-Reisen<br>
+          Peter Muster<br>
+          Dorfweg 36<br>
+          1234 Altenstadt<br>
+          Tel. 099 - 11 22 33<br>
+          Fax 099 - 11 22 44
+        </p>
+      </footer>
+
+    </aside>
+
+  </div>
+
+</body>
+
+</html>

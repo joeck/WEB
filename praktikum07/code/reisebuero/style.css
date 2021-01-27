@@ -1,0 +1,21 @@
+wrapper {
+    background-color: gray;
+    width: 100vw;
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.paragraph {
+    width: 80vw;
+    background-color: white;
+    padding: 10px;
+    margin: 10px auto;
+}
+
+header {
+    width: 100vw;
+    background-color: cadetblue;
+    font-size: 80pt;
+    text-align: center;
+    padding: 10px;
+}
